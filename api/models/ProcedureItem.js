@@ -8,7 +8,6 @@
 module.exports = {
 
   attributes: {
-
     name: {
       type: 'string'
     },
@@ -17,7 +16,9 @@ module.exports = {
       via: 'procedureItem'
     },
   },
-  seedData:[
+
+  
+  seedData: [
     {
     	id:1,
       	name:"Consulta"
