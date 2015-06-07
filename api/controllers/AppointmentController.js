@@ -14,7 +14,7 @@ module.exports = {
 		Appointment.find(1).exec(function(err, appointments){
 			if(err) return res.negotiate(err);
 			async.eachSeries(appointments, function(appointment, cb){
-				Procedure.find({appointment: appointment.id}).exec(function(errP, procedures){
+				Procedure.find({appointment: appointment.id}).populate('procedureItem').exec(function(errP, procedures){
 					if(errP) return cb(errP);
 					appointment.procedures = procedures;
 					appointment.proceduress = procedures;
@@ -23,6 +23,26 @@ module.exports = {
 			}, function(errE){
 				if(errE) return cb(errE);
 				res.ok(appointments)
+			})
+		})
+	},
+
+	nestedToObject: function (req, res){
+		Appointment.find(1).exec(function(err, appointments){
+			if(err) return res.negotiate(err);
+			var apps = [];
+			async.eachSeries(appointments, function(appointment, cb){
+				var app =  appointment.toObject();
+				Procedure.find({appointment: appointment.id}).populate('procedureItem').exec(function(errP, procedures){
+					if(errP) return cb(errP);
+					app.procedures = procedures;
+					app.proceduress = procedures;
+					apps.push(app);
+					cb();
+				})
+			}, function(errE, results){
+				if(errE) return cb(errE);
+				res.ok(apps)
 			})
 		})
 	}
