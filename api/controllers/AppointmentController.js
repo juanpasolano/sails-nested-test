@@ -13,10 +13,11 @@ module.exports = {
 	nested: function (req, res){
 		Appointment.find(1).exec(function(err, appointments){
 			if(err) return res.negotiate(err);
+			_.each(appointments, function(a){a.procedures = 'fuckyou'})
 			async.eachSeries(appointments, function(appointment, cb){
 				Procedure.find({appointment: appointment.id}).populate('procedureItem').exec(function(errP, procedures){
 					if(errP) return cb(errP);
-					appointment.procedures = procedures;
+					appointment.proceduresss = procedures;
 					appointment.proceduress = procedures;
 					cb()
 				})
