@@ -17,7 +17,7 @@ module.exports = {
 			async.eachSeries(appointments, function(appointment, cb){
 				Procedure.find({appointment: appointment.id}).populate('procedureItem').exec(function(errP, procedures){
 					if(errP) return cb(errP);
-					appointment.proceduresss = procedures;
+					appointment.proceduress = procedures;
 					appointment.procedures = procedures;
 					cb()
 				})
